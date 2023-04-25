@@ -96,7 +96,8 @@
     <main class="form-signin w-100 m-auto">
         <form method="post">
             <i class="h1 mb-4 bi bi-person-circle"></i>
-            <h1 class="h3 mb-3 fw-normal">Please enter your details to signup</h1>
+            <h1 class="h3 mb-1 fw-normal"><?= APP_NAME ?></h1>
+            <h2 class="h3 mb-2 fw-normal">signup</h2>
 
             <div class="form-floating">
                 <input name="username" type="username" class="form-control" id="floatingInput" placeholder="Username">
@@ -115,6 +116,9 @@
                 <label>
                     <input type="checkbox" name="terms" value="1"> Accept terms
                 </label>
+            </div>
+            <div class="form-floating mb-3">
+                Already have an account?! <a href="<?= ROOT ?>/login">Login here</a>
             </div>
             <button class="w-100 btn btn-lg btn-primary" type="submit">Create account</button>
             <p class="mt-5 mb-3 text-body-secondary">&copy; 2023</p>
