@@ -1,0 +1,3 @@
+# MVC_SimpleSocWebsiteQuPrCh
+
+Creating first simple social blog on my MVC...

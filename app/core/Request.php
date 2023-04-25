@@ -1,0 +1,87 @@
+<?php
+
+/**
+ * Request class
+ * Gets and sets data in the POST and GET global variables; Получает и устанавливает данные в глобальных переменных POST и GET.
+ */
+
+namespace Core;
+
+defined('ROOTPATH') or exit('Access Denied!');
+
+class Request
+{
+    /** check which post method was used; проверить, какой почтовый метод был использован **/
+    public function method(): string
+    {
+        return $_SERVER['REQUEST_METHOD'];
+    }
+
+    /** check if something was posted; проверить, было ли что-то опубликовано **/
+    public function posted(): bool
+    {
+        if ($_SERVER['REQUEST_METHOD'] == "POST" && count($_POST) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /** get a value from the POST variable; получить значение из переменной POST **/
+    public function post(string $key = '', mixed $default = ''): mixed
+    {
+        if (empty($key)) {
+            return $_POST;
+        } else {
+            if (isset($_POST[$key])) {
+                return $_POST[$key];
+            }
+        }
+
+        return $default;
+    }
+
+    /** get a value from the FILES variable; получить значение из переменной FILES **/
+    public function files(string $key = '', mixed $default = ''): mixed
+    {
+        if (empty($key)) {
+            return $_FILES;
+        } else {
+            if (isset($_FILES[$key])) {
+                return $_FILES[$key];
+            }
+        }
+
+        return $default;
+    }
+
+    /** get a value from the GET variable; получить значение из переменной GET **/
+    public function get(string $key = '', mixed $default = ''): mixed
+    {
+        if (empty($key)) {
+            return $_GET;
+        } else {
+            if (isset($_GET[$key])) {
+                return $_GET[$key];
+            }
+        }
+
+        return $default;
+    }
+
+    /** get a value from the REQUEST variable; получить значение из переменной REQUEST **/
+    public function input(string $key, mixed $default = ''): mixed
+    {
+        if (isset($_REQUEST[$key])) {
+            return $_REQUEST[$key];
+        }
+
+        return $default;
+    }
+
+    /** get all values from the REQUEST variable; получить все значения из переменной REQUEST **/
+    public function all(): mixed
+    {
+        return $_REQUEST;
+    }
+}
