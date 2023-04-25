@@ -5,12 +5,14 @@ namespace Controller;
 /** Прямой путь к файлу будет заблокирован */
 defined('ROOTPATH') or exit('Доступ запрещен!');
 
-class _404Controller
+/** класс регистрации(signup) */
+class SignupController
 {
     use MainController;
     
+    /** общий метод */
     public function index()
     {
-        $this->view('404');
+        $this->view('signup');
     }
 }

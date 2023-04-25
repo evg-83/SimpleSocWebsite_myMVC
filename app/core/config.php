@@ -5,17 +5,17 @@ defined('ROOTPATH') or exit('Доступ запрещен!');
 
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
     /** БД конфиг */
-    define('DBNAME', 'MVC_QuPrCh_up1');
+    define('DBNAME', 'MVC_SimpleSocWebsiteQuPrCh');
     define('DBHOST', 'localhost');
     define('DBUSER', 'evg');
     define('DBPASS', 3);
     define('DBDRIVER', ''); /** если надо можно сменить драйвер(вид БД: mySQL, postgres и тд) */
     
     /** Создаю константу - путь для отображения изображений */
-    define('ROOT', 'http://localhost/LearnProjects/MVC_QuPrCh_up1/public');
+    define('ROOT', 'http://localhost/LearnProjects/MVC_SimpleSocWebsiteQuPrCh/public');
 } else {
     /** БД конфиг */
-    define('DBNAME', 'MVC_QuPrCh_up1');
+    define('DBNAME', 'MVC_SimpleSocWebsiteQuPrCh');
     define('DBHOST', 'localhost');
     define('DBUSER', 'evg');
     define('DBPASS', 3);
