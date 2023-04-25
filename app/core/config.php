@@ -26,8 +26,8 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
 }
 
 /** просто для примера константы */
-define('APP_NAME', 'My website');
-define('APP_DESC', 'Best website on the planet');
+define('APP_NAME', 'My social website');
+define('APP_DESC', 'Best social website on the planet');
 
 /** использование отладки; true-покажет ошибки; а false-например на онлайн серве, чтоб не отображались ошибки */
 define('DEBUG', true);
