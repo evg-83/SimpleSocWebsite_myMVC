@@ -16,8 +16,11 @@ class User
 
     /** обозначу какие столбцы можно редактировать */
     protected $allowedColumns = [
+        'image',
+        'username',
         'email',
         'password',
+        'date',
     ];
 
     /** метод подтверждения */
@@ -37,6 +40,16 @@ class User
         }
 
         /** сообщение об ошибке */
+        if (empty($data['username'])) {
+            $this->errors['username'] = "A username is required";
+        } else {
+            /** если username не соответствует регулярному выражению, то смс об ошибке */
+            if (!preg_match('/^[a-zA-Z]+$/', $data['username'])) {
+                $this->errors['username'] = "Username can only have letter with no spaces";
+            }
+        }
+
+        /** сообщение об ошибке */
         if (empty($data['password'])) {
             $this->errors['password'] = "Password is required";
         }
@@ -51,5 +64,27 @@ class User
             return true;
         }
         return false;
+    }
+
+    /** Create table function, if not exist table */
+    public function create_table()
+    {
+        /** создание таблицы */
+        $query = "
+            create table if not exists users
+            (
+				id int unsigned primary key auto_increment,
+				username varchar(50) not null,
+				image varchar(1024) null,
+				email varchar(100) not null,
+				password varchar(255) not null,
+				date datetime null,
+
+				key username (username),
+				key email (email)
+            )
+        ";
+
+        $this->query($query);
     }
 }

@@ -4,7 +4,7 @@
 defined('ROOTPATH') or exit('Доступ запрещен!');
 
 if ($_SERVER['SERVER_NAME'] == 'localhost') {
-    /** БД конфиг */
+    /** localhost БД конфиг */
     define('DBNAME', 'MVC_SimpleSocWebsiteQuPrCh');
     define('DBHOST', 'localhost');
     define('DBUSER', 'evg');
@@ -14,7 +14,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
     /** Создаю константу - путь для отображения изображений */
     define('ROOT', 'http://localhost/LearnProjects/MVC_SimpleSocWebsiteQuPrCh/public');
 } else {
-    /** БД конфиг */
+    /** online server БД конфиг */
     define('DBNAME', 'MVC_SimpleSocWebsiteQuPrCh');
     define('DBHOST', 'localhost');
     define('DBUSER', 'evg');
