@@ -95,11 +95,11 @@ trait MainModel
             foreach ($data as $key => $value) {
                 /** если в массиве allowedColumns из app/models/User.php не будет соответствия данным(по ключу) из введенных, то удалить эти данные(по ключу) из вводимых, чтобы не прошли в запрос */
                 if (!in_array($key, $this->allowedColumns)) {
-                    unset($data[ $key ]);
+                    unset($data[$key]);
                 }
             }
         }
-        
+
         $keys     = array_keys($data);
         $query    = "insert into $this->table (" . implode(',', $keys) . ") values (:" . implode(',:', $keys) . ")";
 
@@ -121,11 +121,11 @@ trait MainModel
             foreach ($data as $key => $value) {
                 /** если в массиве allowedColumns из app/models/User.php не будет соответствия данным(по ключу) из введенных, то удалить эти данные(по ключу) из вводимых, чтобы не прошли в запрос */
                 if (!in_array($key, $this->allowedColumns)) {
-                    unset($data[ $key ]);
+                    unset($data[$key]);
                 }
             }
         }
-        
+
         $keys             = array_keys($data);
         $query            = "update $this->table set ";
 

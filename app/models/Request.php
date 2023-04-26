@@ -1,14 +1,13 @@
 <?php
 
-/**
- * Request class
- * Gets and sets data in the POST and GET global variables; Получает и устанавливает данные в глобальных переменных POST и GET.
- */
-
 namespace Core;
 
 defined('ROOTPATH') or exit('Access Denied!');
 
+/**
+ * Request class
+ * Gets and sets data in the POST and GET global variables; Получает и устанавливает данные в глобальных переменных POST и GET.
+ */
 class Request
 {
     /** check which post method was used; проверить, какой почтовый метод был использован **/
@@ -67,6 +66,12 @@ class Request
         }
 
         return $default;
+    }
+
+    /** put data into the post variable; поместить данные в переменную post **/
+    public function set(string $key, mixed $value = ''): void
+    {
+        $_POST[$key] = $value;
     }
 
     /** get a value from the REQUEST variable; получить значение из переменной REQUEST **/

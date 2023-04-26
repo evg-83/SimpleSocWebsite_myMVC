@@ -99,24 +99,46 @@
             <h1 class="h3 mb-1 fw-normal"><?= APP_NAME ?></h1>
             <h2 class="h3 mb-2 fw-normal">signup</h2>
 
+            <?php if (!empty($errors)) : ?>
+                <div class="alert alert-danger text-center">Please fix the errors</div>
+            <?php endif; ?>
+
             <div class="form-floating">
-                <input name="username" type="username" class="form-control" id="floatingInput" placeholder="Username">
+                <input value="<?= old_value('username') ?>" name="username" type="username" class="form-control" id="floatingInput" placeholder="Username">
                 <label for="floatingInput">Username</label>
             </div>
+
+            <?php if (!empty($errors['username'])) : ?>
+                <div class="text-danger"><?= $errors['username'] ?></div>
+            <?php endif; ?>
+
             <div class="form-floating">
-                <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input value="<?= old_value('email') ?>" name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>
             </div>
+
+            <?php if (!empty($errors['email'])) : ?>
+                <div class="text-danger"><?= $errors['email'] ?></div>
+            <?php endif; ?>
+
             <div class="form-floating">
-                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input value="<?= old_value('password') ?>" name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
 
+            <?php if (!empty($errors['password'])) : ?>
+                <div class="text-danger"><?= $errors['password'] ?></div>
+            <?php endif; ?>
+
             <div class="checkbox mb-3">
                 <label>
-                    <input type="checkbox" name="terms" value="1"> Accept terms
+                    <input <?= old_checked('terms', 1) ?> type="checkbox" name="terms" value="1"> Accept terms
                 </label>
+                <?php if (!empty($errors['terms'])) : ?>
+                    <div class="text-danger"><?= $errors['terms'] ?></div>
+                <?php endif; ?>
             </div>
+
             <div class="form-floating mb-3">
                 Already have an account?! <a href="<?= ROOT ?>/login">Login here</a>
             </div>
