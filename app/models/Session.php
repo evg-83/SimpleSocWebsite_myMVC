@@ -14,10 +14,10 @@ defined('ROOTPATH') or exit('Access Denied!');
 class Session
 {
 
-    /** Summary of mainkey = 'APP' */
-    public $mainkey = 'APP';
-    /** Summary of userkey = 'USER' */
-    public $userkey = 'USER';
+    /** Summary of mainkey = 'APP1' */
+    public $mainkey = 'APP1';
+    /** Summary of userkey = 'USER1' */
+    public $userkey = 'USER1';
 
     /** activate session if not yet started; активировать сеанс, если он еще не запущен **/
     private function start_session(): int

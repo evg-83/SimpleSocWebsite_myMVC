@@ -99,23 +99,31 @@
             <h1 class="h3 mb-1 fw-normal"><?= APP_NAME ?></h1>
             <h2 class="h3 mb-3 fw-normal">Please login</h2>
 
+            <?php if (!empty($errors)) : ?>
+                <div class="alert alert-danger text-center"><?= implode("<br>", $errors) ?></div>
+            <?php endif; ?>
+
             <div class="form-floating">
-                <input name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                <input value="<?= old_value('email') ?>" name="email" type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
                 <label for="floatingInput">Email address</label>
             </div>
+
             <div class="form-floating">
-                <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <input value="<?= old_value('password') ?>" name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Password</label>
             </div>
+
             <div class="form-floating mt-3 mb-3">
                 Don`t have an account?! <a href="<?= ROOT ?>/signup">Signup here</a>
             </div>
 
-            <div class="checkbox mb-3">
+            <!-- Пока закоментю, говорит сложно для этого урока -->
+            <!-- <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" name="remember" value="1"> Remember
                 </label>
-            </div>
+            </div> -->
+
             <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
             <p class="mt-5 mb-3 text-body-secondary">&copy; 2023</p>
         </form>
