@@ -1,5 +1,6 @@
 <?php
 
+use Core\Session;
 use Model\Image;
 
 /** Прямой путь к файлу будет заблокирован */
@@ -33,6 +34,18 @@ function check_extensions()
         show("Please load the following extensions in your php.ini file: <br>" . implode("<br>", $not_loaded));
         die;
     }
+}
+
+/** user function; метод аватарки юзера(получает данные из столбца в пользовательских данных сеанса) */
+function user(string $key = '')
+{
+	$ses = new Session;
+	$row = $ses->user();
+
+	if(!empty($row->$key))
+		return $row->$key;
+
+	return '';
 }
 
 /** Вывод ошибок */

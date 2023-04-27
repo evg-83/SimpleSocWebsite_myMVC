@@ -99,7 +99,7 @@ class Session
         return false;
     }
 
-    /** gets data from a column in the session user data; получает данные из столбца в пользовательских данных сеанса **/
+    /** gets data from a column in the session user data; получает данные из столбца в пользовательских данных сеанса */
     public function user(string $key = '', mixed $default = ''): mixed
     {
         $this->start_session();
