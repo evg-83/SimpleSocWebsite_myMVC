@@ -1,7 +1,7 @@
 <?php $this->view('header') ?>
 
 <div class="p-2 col-md-6 shadow mx-auto border rounded">
-    <h2>User Profile</h2>
+    <center><h2>User Profile</h2></center>
 
     <div class="text-center">
 
@@ -32,17 +32,13 @@
         </form>
     </div>
     <div class="my-3">
-        <div class="row post p-1">
-            <div class="col-3 bg-light text-center">
-                <img class="profile-image rounded-circle m-1" src="<?= get_image($row->image) ?>" alt="" style="width: 80px; height: 80px; object-fit: cover;">
-                <h5><?= esc($row->username) ?></h5>
-            </div>
-            <div class="col-9 text-start">
-                <div class="muted"><?= date("Y-m-d") ?></div>
-                <p></p>
-            </div>
-            <hr>
-        </div>
+
+        <?php if (!empty($posts)) : ?>
+            <?php foreach ($posts as $post) : ?>
+                <?php $this->view('post-small', ['post' => $post]) ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+
     </div>
 
 </div>
