@@ -3,6 +3,7 @@
 namespace Controller;
 
 use Core\Session;
+use Model\User;
 
 /** Прямой путь к файлу будет заблокирован */
 defined('ROOTPATH') or exit('Доступ запрещен!');
@@ -11,17 +12,24 @@ defined('ROOTPATH') or exit('Доступ запрещен!');
 class ProfileController
 {
     use MainController;
-    
+
     /** общий метод */
     public function index()
     {
+        $id = user('id');
+
         $ses = new Session;
-        
+
         /** перенаправление если не залогинился */
         if (!$ses->is_logged_in()) {
             redirect('login');
         }
-        
-        $this->view('profile');
+
+        /** get user row */
+        $user = new User;
+
+        $data['row'] = $user->first(['id' => $id]);
+
+        $this->view('profile', $data);
     }
 }
