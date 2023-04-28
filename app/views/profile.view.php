@@ -1,7 +1,9 @@
 <?php $this->view('header') ?>
 
 <div class="p-2 col-md-6 shadow mx-auto border rounded">
-    <center><h2>User Profile</h2></center>
+    <center>
+        <h2>User Profile</h2>
+    </center>
 
     <div class="text-center">
 
@@ -9,9 +11,13 @@
             <img class="profile-image rounded-circle m-4" src="<?= get_image($row->image) ?>" alt="" style="width: 200px; height: 200px; object-fit: cover;">
             <label>
                 <i style="position: absolute; cursor: pointer;" class="h1 text-primary bi bi-image"></i>
-                <input onchange="display_image(this.files[0])" type="file" class="d-none">
+                <input onchange="display_image(this.files[0]); change_image(file)" type="file" class="d-none">
             </label>
         </span>
+
+        <div class="profile-image-prog progress d-none">
+            <div class="progress-bar" style="width: 0%">0%</div>
+        </div>
 
         <h3><?= esc($row->username) ?></h3>
 
@@ -23,6 +29,11 @@
 
     </div>
     <div>
+
+        <div class="post-prog progress d-none">
+            <div class="progress-bar" style="width: 0%">0%</div>
+        </div>
+
         <form method="post" action="">
             <div class="bg-secondary p-2">
                 <textarea rows="6" class="form-control" placeholder="Whats on your mind?"></textarea>
@@ -40,7 +51,52 @@
         <?php endif; ?>
 
     </div>
-
 </div>
+
+<script>
+
+    /** функция изменения изображения */
+    function change_image(file) {
+        var obj = {};
+        /** в принципе создаю ключи-значения */
+        obj.image = file;
+        obj.data_type = "profile-image";
+        /** даст текущий id юзера */
+        obj.id = "<?= user('id') ?>";
+
+        send_data(obj);
+    }
+
+    /** send data function; функция оправки данных */
+    function send_data(obj) {
+        /** создаю объект(форма(моя имитация формы)) */
+        var myform = new FormData();
+
+        for(key in obj) {
+            /** добавить вещи в форму(ключ, значение(внутри объекта ключ)) */
+            myform.append(key, obj[key]);
+        }
+        /** объект аякс */
+        var ajax = new XMLHttpRequest();
+        /** прослушиватель событий: 1й-какое событие измененного состояние слушаем; 2е-функ работающая при получении готового измененного состояния(будет ловит это изм сост) */
+        ajax.addEventListener('readystatechange', function(){
+            /** 4-Операция полностью завершена(состояние); 200-понятно статус ОК */
+            if(ajax.readyState == 4 && ajax.status == 200) {
+                handle_result(ajax.responseText);
+            }
+        });
+        /** открываю объект */
+        ajax.open('post', '<?=ROOT?>/ajax', true);
+        /** отправляю объект */
+        ajax.open(myform);
+    }
+
+    /** функция возврата результата */
+    function handle_result(result) {
+        /** чтобы видеть какой результат будем получать */
+        console.log(result);
+    }
+
+</script>
 
 <?php $this->view('footer') ?>
