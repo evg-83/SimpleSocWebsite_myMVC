@@ -71,9 +71,12 @@
         var obj = {};
         /** в принципе создаю ключи-значения */
         obj.image = file;
+        /** берутся из классов html разметки */
         obj.data_type = "profile-image";
         /** даст текущий id юзера */
         obj.id = "<?= user('id') ?>";
+        /** берутся из классов html разметки */
+        obj.progressbar = 'post-prog';
 
         send_data(obj);
     }
@@ -82,6 +85,12 @@
     function send_data(obj) {
         /** создаю объект(форма(моя имитация формы)) */
         var myform = new FormData();
+        var progressbar = null;
+
+        /** проверка связанная с прогрессбаром */
+        if (typeof obj.progressbar != 'undefined') {
+            progressbar = document.querySelector("." + obj.progressbar);
+        }
 
         for (key in obj) {
             /** добавить вещи в форму(ключ, значение(внутри объекта ключ)) */
@@ -96,6 +105,29 @@
                 handle_result(ajax.responseText);
             }
         });
+
+        console.log(progressbar);
+
+        /** проверка связанная с прогрессбаром */
+        if (progressbar) {
+            /** предыдущий прогрессбар */
+            progressbar.classList.remove("d-none");
+
+            /** прежде чем запустить проверку, установлю прогрессбар на ноль, точка-начала его так сказать */
+            progressbar.children[0].style.width = "0%";
+            progressbar.children[0].innerHTML   = "0%";
+
+            /** проверка прогресса загрузки(при загрузке объекта, проверяется аяксом(прослушивается) прогресс загрузки) */
+            ajax.upload.addEventListener('progress', function(e) {
+                /** процент равен загружаемые данные делю на всего загруженных и умножаю на 100, чтобы получить процент, и все это округлить */
+                let percent = Math.round((e.loaded / e.total) * 100);
+
+                /** а затем меняю эти значения */
+                progressbar.children[0].style.width = percent + "%";
+                progressbar.children[0].innerHTML   = percent + "%";
+            });
+        }
+
         /** открываю объект */
         ajax.open('post', '<?= ROOT ?>/ajax', true);
         /** отправляю объект */
@@ -112,6 +144,8 @@
         /** если тип данных объекта такой */
         if (obj.data_type == "profile-image") {
             alert(obj.message);
+            /** обновление страницы */
+            window.location.reload();
         }
     }
 </script>

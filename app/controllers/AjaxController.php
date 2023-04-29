@@ -51,12 +51,19 @@ class AjaxController
                     /** перемещение файла(как до этого в show() видел) */
                     move_uploaded_file($image_row['tmp_name'], $destination);
                     /** изменение размера */
-                    $image_class     = new Image;
+                    $image_class = new Image;
                     $image_class->resize($destination, 1000);
 
                     $id = user('id');
-                    /** созранение этих данных юзеру */
+                    /** строка юзера по id */
+                    $row = $user->first(['id' => $id]);
+                    /** сохранение этих данных юзеру */
                     $user->update($id, ['image' => $destination]);
+
+                    /** удаление старых изображений */
+                    if (file_exists($row->image)) {
+                        unlink($row->image);
+                    }
 
                     $info['message'] = "Profile image change successfully";
                     $info['success'] = true;
