@@ -68,6 +68,23 @@ class AjaxController
                     $info['message'] = "Profile image change successfully";
                     $info['success'] = true;
                 }
+            } else {
+                if ($data_type = 'create-post') {
+                    $id = user('id');
+
+                    $post = new Post;
+
+                    $arr = [];
+                    /** все что нужно для поста */
+                    $arr['post']    = $req->input('post');
+                    $arr['user_id'] = $id;
+                    $arr['date']    = date("Y-m-d H:i:s");
+                    /** сохранение этих данных юзеру в посты */
+                    $post->insert($arr);
+
+                    $info['message'] = "Post created successfully";
+                    $info['success'] = true;
+                }
             }
 
             echo json_encode($info);

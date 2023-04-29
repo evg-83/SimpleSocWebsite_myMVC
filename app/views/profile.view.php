@@ -42,17 +42,18 @@
     </div>
     <div>
 
-        <div class="post-prog progress d-none">
-            <div class="progress-bar" style="width: 0%">0%</div>
-        </div>
-
-        <form method="post" action="">
+        <form method="post" onsubmit="submit_post(event)">
             <div class="bg-secondary p-2">
-                <textarea rows="6" class="form-control" placeholder="Whats on your mind?"></textarea>
+                <textarea id="post-input" rows="6" class="form-control" placeholder="Whats on your mind?"></textarea>
                 <button class="btn btn-warning mt-1 float-end">Post</button>
                 <div class="clearfix"></div>
             </div>
         </form>
+
+        <div class="post-prog progress d-none">
+            <div class="progress-bar" style="width: 0%">0%</div>
+        </div>
+
     </div>
     <div class="my-3">
 
@@ -73,6 +74,28 @@
         obj.image = file;
         /** берутся из классов html разметки */
         obj.data_type = "profile-image";
+        /** даст текущий id юзера */
+        obj.id = "<?= user('id') ?>";
+        /** берутся из классов html разметки */
+        obj.progressbar = 'profile-image-prog';
+
+        send_data(obj);
+    }
+
+    /** функция размещения поста в профиле */
+    function submit_post(e) {
+        // будет событие, которое захватим используя (e).
+        //предотвращение публикации
+        e.preventDefault();
+
+
+        var obj = {};
+        /** в принципе создаю ключи-значения */
+        // obj.image = file;
+        /** в общем, ищем внутри формы - это(в скобках) */
+        obj.post = e.currentTarget.querySelector("#post-input").value;
+        /** берутся из классов html разметки */
+        obj.data_type = "create-post";
         /** даст текущий id юзера */
         obj.id = "<?= user('id') ?>";
         /** берутся из классов html разметки */
@@ -115,7 +138,7 @@
 
             /** прежде чем запустить проверку, установлю прогрессбар на ноль, точка-начала его так сказать */
             progressbar.children[0].style.width = "0%";
-            progressbar.children[0].innerHTML   = "0%";
+            progressbar.children[0].innerHTML = "0%";
 
             /** проверка прогресса загрузки(при загрузке объекта, проверяется аяксом(прослушивается) прогресс загрузки) */
             ajax.upload.addEventListener('progress', function(e) {
@@ -124,7 +147,7 @@
 
                 /** а затем меняю эти значения */
                 progressbar.children[0].style.width = percent + "%";
-                progressbar.children[0].innerHTML   = percent + "%";
+                progressbar.children[0].innerHTML = percent + "%";
             });
         }
 
@@ -146,6 +169,12 @@
             alert(obj.message);
             /** обновление страницы */
             window.location.reload();
+        } else {
+            if (obj.data_type == "create-post") {
+                alert(obj.message);
+                /** обновление страницы */
+                window.location.reload();
+            }
         }
     }
 </script>
