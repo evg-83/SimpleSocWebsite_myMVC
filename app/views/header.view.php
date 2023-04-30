@@ -48,7 +48,7 @@
         </div>
     </header>
     
-    <main class="p-4">
+    <main class="px-4">
 
 </body>
 

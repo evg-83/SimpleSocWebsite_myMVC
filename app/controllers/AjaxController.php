@@ -73,11 +73,32 @@ class AjaxController
                 if ($data_type == 'create-post') {
                     $id = user('id');
 
+                    $image_row = $req->files('image');
+
+                    if (!empty($image_row['name']) && $image_row['error'] == 0) {
+                        /** папка загрузки изображений */
+                        $folder = "uploads/";
+
+                        if (!file_exists($folder)) {
+                            mkdir($folder, 0777, true);
+                        }
+                        /** место назначения */
+                        $destination = $folder . time() . $image_row['name'];
+                        /** перемещение файла(как до этого в show() видел) */
+                        move_uploaded_file($image_row['tmp_name'], $destination);
+
+                        /** изменение размера */
+                        $image_class = new Image;
+
+                        $image_class->resize($destination, 1000);
+                    }
+
                     $post = new Post;
 
-                    $arr = [];
+                    $arr  = [];
                     /** все что нужно для поста */
                     $arr['post']    = $req->input('post');
+                    $arr['image']   = $destination ?? '';
                     $arr['user_id'] = $id;
                     $arr['date']    = date("Y-m-d H:i:s");
 

@@ -1,18 +1,19 @@
 <?php $this->view('header') ?>
 
 <div class="p-2 col-md-6 shadow mx-auto border rounded">
-    <center>
-        <h2>User Profile</h2>
-    </center>
 
     <div class="text-center">
 
         <span>
             <img class="profile-image rounded-circle m-4" src="<?= get_image($row->image) ?>" style="width: 200px; height: 200px; object-fit: cover;">
-            <label>
-                <i style="position: absolute; cursor: pointer;" class="h1 text-primary bi bi-image"></i>
-                <input onchange="display_image(this.files[0])" type="file" class="d-none" name="">
-            </label>
+
+            <?php if (user('id') == $row->id) : ?>
+                <label>
+                    <i style="position: absolute; cursor: pointer;" class="h1 text-primary bi bi-image"></i>
+                    <input onchange="display_image(this.files[0])" type="file" class="d-none" name="">
+                </label>
+            <?php endif; ?>
+
         </span>
 
         <div class="profile-image-prog progress d-none">
@@ -56,33 +57,38 @@
         </script>
 
     </div>
-    <div>
 
-        <form method="post" onsubmit="submit_post(event)">
-            <div class="bg-secondary p-2">
-                <textarea id="post-input" rows="4" class="form-control" placeholder="Whats on your mind?"></textarea>
+    <!-- post area; почтовая зона -->
+    <?php if (user('id') == $row->id) : ?>
+        <div>
+            <form method="post" onsubmit="submit_post(event)">
+                <div class="bg-secondary p-2">
+                    <textarea id="post-input" rows="4" class="form-control" placeholder="Whats on your mind?"></textarea>
 
-                <label>
-                    <i style="cursor: pointer;" class="h1 text-white bi bi-image"></i>
-                    <input id="post-image-input" onchange="display_post_image(this.files[0])" type="file" class="d-none" name="">
-                </label>
+                    <label>
+                        <i style="cursor: pointer;" class="h1 text-white bi bi-image"></i>
+                        <input id="post-image-input" onchange="display_post_image(this.files[0])" type="file" class="d-none" name="">
+                    </label>
 
-                <button class="btn btn-warning mt-1 float-end">Post</button>
+                    <button class="btn btn-warning mt-1 float-end">Post</button>
 
-                <div class="text-center d-none">
-                    <img class="post-image m-1" src="" style="width: 100px; height: 100px; object-fit: cover;">
+                    <div class="text-center d-none">
+                        <img class="post-image m-1" src="" style="width: 100px; height: 100px; object-fit: cover;">
+                    </div>
+
+                    <div class="clearfix"></div>
+
                 </div>
+            </form>
 
-                <div class="clearfix"></div>
-
+            <div class="post-prog progress d-none">
+                <div class="progress-bar" style="width: 0%">0%</div>
             </div>
-        </form>
 
-        <div class="post-prog progress d-none">
-            <div class="progress-bar" style="width: 0%">0%</div>
         </div>
+    <?php endif; ?>
+    <!-- end post area; конец почтовой зоны -->
 
-    </div>
     <div class="my-3">
 
         <?php if (!empty($posts)) : ?>
