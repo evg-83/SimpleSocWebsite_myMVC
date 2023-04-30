@@ -44,7 +44,7 @@
 
         <form method="post" onsubmit="submit_post(event)">
             <div class="bg-secondary p-2">
-                <textarea id="post-input" rows="6" class="form-control" placeholder="Whats on your mind?"></textarea>
+                <textarea id="post-input" rows="4" class="form-control" placeholder="Whats on your mind?"></textarea>
                 <button class="btn btn-warning mt-1 float-end">Post</button>
                 <div class="clearfix"></div>
             </div>
@@ -107,7 +107,7 @@
     /** send data function; функция оправки данных */
     function send_data(obj) {
         /** создаю объект(форма(моя имитация формы)) */
-        var myform = new FormData();
+        var myform      = new FormData();
         var progressbar = null;
 
         /** проверка связанная с прогрессбаром */
@@ -129,7 +129,7 @@
             }
         });
 
-        console.log(progressbar);
+        // console.log(progressbar);
 
         /** проверка связанная с прогрессбаром */
         if (progressbar) {
@@ -138,7 +138,7 @@
 
             /** прежде чем запустить проверку, установлю прогрессбар на ноль, точка-начала его так сказать */
             progressbar.children[0].style.width = "0%";
-            progressbar.children[0].innerHTML = "0%";
+            progressbar.children[0].innerHTML   = "0%";
 
             /** проверка прогресса загрузки(при загрузке объекта, проверяется аяксом(прослушивается) прогресс загрузки) */
             ajax.upload.addEventListener('progress', function(e) {
@@ -147,7 +147,7 @@
 
                 /** а затем меняю эти значения */
                 progressbar.children[0].style.width = percent + "%";
-                progressbar.children[0].innerHTML = percent + "%";
+                progressbar.children[0].innerHTML   = percent + "%";
             });
         }
 

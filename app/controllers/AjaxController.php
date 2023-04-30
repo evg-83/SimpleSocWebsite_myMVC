@@ -2,14 +2,14 @@
 
 namespace Controller;
 
+/** Прямой путь к файлу будет заблокирован */
 defined('ROOTPATH') or exit('Доступ запрещен!');
 
+use Model\Post;
 use Model\Image;
 use Core\Request;
 use Core\Session;
 use Model\User;
-
-/** Прямой путь к файлу будет заблокирован */
 
 /** класс ajax */
 class AjaxController
@@ -35,7 +35,7 @@ class AjaxController
             $data_type = $req->input('data_type');
             $info['data_type'] = $data_type;
 
-            if ($data_type = 'profile-image') {
+            if ($data_type == 'profile-image') {
                 /** тк obj.image = file */
                 $image_row = $req->files('image');
 
@@ -57,19 +57,20 @@ class AjaxController
                     $id = user('id');
                     /** строка юзера по id */
                     $row = $user->first(['id' => $id]);
-                    /** сохранение этих данных юзеру */
-                    $user->update($id, ['image' => $destination]);
 
                     /** удаление старых изображений */
                     if (file_exists($row->image)) {
                         unlink($row->image);
                     }
 
+                    /** сохранение этих данных юзеру */
+                    $user->update($id, ['image' => $destination]);
+
                     $info['message'] = "Profile image change successfully";
                     $info['success'] = true;
                 }
             } else {
-                if ($data_type = 'create-post') {
+                if ($data_type == 'create-post') {
                     $id = user('id');
 
                     $post = new Post;
@@ -79,6 +80,7 @@ class AjaxController
                     $arr['post']    = $req->input('post');
                     $arr['user_id'] = $id;
                     $arr['date']    = date("Y-m-d H:i:s");
+
                     /** сохранение этих данных юзеру в посты */
                     $post->insert($arr);
 

@@ -2,11 +2,13 @@
 
 namespace Controller;
 
-use Core\Session;
-use Model\User;
-
 /** Прямой путь к файлу будет заблокирован */
 defined('ROOTPATH') or exit('Доступ запрещен!');
+
+use Core\Session;
+use Model\Post;
+use Model\User;
+
 
 /** класс профиль(profile) */
 class ProfileController
@@ -25,10 +27,16 @@ class ProfileController
             redirect('login');
         }
 
-        /** get user row */
         $user = new User;
+        /** get user row */
+        $data['row'] = $row = $user->first(['id' => $id]);
 
-        $data['row'] = $user->first(['id' => $id]);
+        if ($data['row']) {
+            $post = new Post;
+            // $post->create_table();
+            /** get post row */
+            $data['posts'] = $post->where(['user_id' => $row->id]);
+        }
 
         $this->view('profile', $data);
     }
