@@ -33,9 +33,25 @@
                     alert('Only files of this type allowed: ' + allowed.toString(", "));
                     return;
                 }
+            }
 
-                document.querySelector(".profile-image").src = URL.createObjectURL(file);
-                change_image(file);
+            function display_post_image(file) {
+                /** разрешенные формы изображений */
+                let allowed = ['jpg', 'jpeg', 'png', 'webp'];
+                // расширение(у файла есть название->разделить точкой->взять последний элемент)
+                let ext = file.name.split(".").pop();
+
+                //если форма(файл-изображение) не содержит название(файл-изображение) в нижнем регистре
+                if (!allowed.includes(ext.toLowerCase())) {
+                    alert('Only files of this type allowed: ' + allowed.toString(", "));
+                    post_image_added = false;
+                    return;
+                }
+
+                document.querySelector(".post-image").src = URL.createObjectURL(file);
+                document.querySelector(".post-image").parentNode.classList.remove("d-none");
+
+                post_image_added = true;
             }
         </script>
 
@@ -45,8 +61,20 @@
         <form method="post" onsubmit="submit_post(event)">
             <div class="bg-secondary p-2">
                 <textarea id="post-input" rows="4" class="form-control" placeholder="Whats on your mind?"></textarea>
+
+                <label>
+                    <i style="cursor: pointer;" class="h1 text-white bi bi-image"></i>
+                    <input id="post-image-input" onchange="display_post_image(this.files[0])" type="file" class="d-none" name="">
+                </label>
+
                 <button class="btn btn-warning mt-1 float-end">Post</button>
+
+                <div class="text-center d-none">
+                    <img class="post-image m-1" src="" style="width: 100px; height: 100px; object-fit: cover;">
+                </div>
+
                 <div class="clearfix"></div>
+
             </div>
         </form>
 
@@ -67,6 +95,9 @@
 </div>
 
 <script>
+    /** переменная сохраненных изображений в постах */
+    var post_image_added = false;
+
     /** функция изменения изображения */
     function change_image(file) {
         var obj = {};
@@ -90,8 +121,10 @@
 
 
         var obj = {};
-        /** в принципе создаю ключи-значения */
-        // obj.image = file;
+        /** если верно, то беру первую картинку из в () */
+        if (post_image_added) {
+            obj.image = e.currentTarget.querySelector("#post-image-input").files[0];
+        }
         /** в общем, ищем внутри формы - это(в скобках) */
         obj.post = e.currentTarget.querySelector("#post-input").value;
         /** берутся из классов html разметки */
@@ -107,7 +140,7 @@
     /** send data function; функция оправки данных */
     function send_data(obj) {
         /** создаю объект(форма(моя имитация формы)) */
-        var myform      = new FormData();
+        var myform = new FormData();
         var progressbar = null;
 
         /** проверка связанная с прогрессбаром */
@@ -138,7 +171,7 @@
 
             /** прежде чем запустить проверку, установлю прогрессбар на ноль, точка-начала его так сказать */
             progressbar.children[0].style.width = "0%";
-            progressbar.children[0].innerHTML   = "0%";
+            progressbar.children[0].innerHTML = "0%";
 
             /** проверка прогресса загрузки(при загрузке объекта, проверяется аяксом(прослушивается) прогресс загрузки) */
             ajax.upload.addEventListener('progress', function(e) {
@@ -147,7 +180,7 @@
 
                 /** а затем меняю эти значения */
                 progressbar.children[0].style.width = percent + "%";
-                progressbar.children[0].innerHTML   = percent + "%";
+                progressbar.children[0].innerHTML = percent + "%";
             });
         }
 
