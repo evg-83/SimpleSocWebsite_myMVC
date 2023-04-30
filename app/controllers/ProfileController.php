@@ -34,8 +34,14 @@ class ProfileController
         if ($data['row']) {
             $post = new Post;
             // $post->create_table();
+
             /** get post row */
             $data['posts'] = $post->where(['user_id' => $row->id]);
+
+            //надо получить id юзера этого смс, прокрутив смс
+            if ($data['posts']) {
+                $data['posts'] = $post->add_user_data($data['posts']);
+            }
         }
 
         $this->view('profile', $data);

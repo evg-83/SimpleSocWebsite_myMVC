@@ -22,6 +22,17 @@ class Post
         'date',
     ];
 
+    /** внесение данных о пользователе */
+    public function add_user_data($rows)
+    {
+        foreach ($rows as $key => $row) {
+            $res = $this->get_row("select * from users where id = :id", ['id' => $row->user_id]);
+            $rows[$key]->user = $res;
+        }
+
+        return $rows;
+    }
+
     /** метод подтверждения */
     public function validate($data)
     {
