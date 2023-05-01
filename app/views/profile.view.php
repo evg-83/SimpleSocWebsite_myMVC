@@ -97,6 +97,9 @@
             <?php endforeach; ?>
         <?php endif; ?>
 
+        <!-- кнопки пагинации -->
+        <?php $pager->display() ?>
+
     </div>
 </div>
 

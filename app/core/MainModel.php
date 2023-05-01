@@ -11,14 +11,14 @@ trait MainModel
     use Database;
 
     /** лимит нумерация страниц */
-    protected $limit  = 10;
+    public $limit  = 10;
     /** смещение нумерации страниц */
-    protected $offset = 0;
+    public $offset = 0;
 
     /** тип порядка -> в сторону убывания */
-    protected $order_type = 'desc';
+    public $order_type = 'desc';
     /** столбец порядка */
-    protected $order_column = 'id';
+    public $order_column = 'id';
     /** ошибки */
     public $errors = [];
 

@@ -31,9 +31,9 @@ class Pager
             $this->start = 1;
         }
 
-        $this->offset = ($page_number - 1) * $limit;
+        $this->offset      = ($page_number - 1) * $limit;
         $this->page_number = $page_number;
-        $this->limit = $limit;
+        $this->limit       = $limit;
 
         $url = isset($_GET['url']) ? $_GET['url'] : '';
 
@@ -47,9 +47,9 @@ class Pager
         $first_link = preg_replace('/page=[0-9]+/', "page=1", $current_link);
         $next_link = preg_replace('/page=[0-9]+/', "page=" . ($page_number + $extras + 1), $current_link);
 
-        $this->links['first'] = $first_link;
+        $this->links['first']   = $first_link;
         $this->links['current'] = $current_link;
-        $this->links['next'] = $next_link;
+        $this->links['next']    = $next_link;
     }
 
     /** Display function; метод отображения */

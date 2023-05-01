@@ -5,6 +5,7 @@ namespace Controller;
 /** Прямой путь к файлу будет заблокирован */
 defined('ROOTPATH') or exit('Доступ запрещен!');
 
+use Core\Pager;
 use Core\Session;
 use Model\Post;
 use Model\User;
@@ -22,6 +23,13 @@ class ProfileController
 
         $ses = new Session;
 
+        /** pagination vars; разбиение на страницы */
+        $limit = 3;
+
+        $data['pager'] = new Pager($limit);
+
+        $offset = $data['pager']->offset;
+
         /** перенаправление если не залогинился */
         if (!$ses->is_logged_in()) {
             redirect('login');
@@ -33,7 +41,14 @@ class ProfileController
 
         if ($data['row']) {
             $post = new Post;
+
             // $post->create_table();
+
+            /** пагинация постов */
+            // лимит постов
+            $post->limit = $limit;
+            // смещение
+            $post->offset = $offset;
 
             /** get post row */
             $data['posts'] = $post->where(['user_id' => $row->id]);
