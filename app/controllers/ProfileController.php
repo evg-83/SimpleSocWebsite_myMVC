@@ -19,7 +19,8 @@ class ProfileController
     /** общий метод */
     public function index()
     {
-        $id = user('id');
+        /** смотрю функцию URL в app/core/functions.php */
+        $id = URL('slug') ?? user('id');
 
         $ses = new Session;
 
