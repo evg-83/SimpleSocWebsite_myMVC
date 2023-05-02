@@ -13,15 +13,26 @@
         <p><?= esc($post->post) ?></p>
 
         <?php if (!empty($post->image)) : ?>
-            <img class=" my-1" src="<?= get_image($post->image) ?>" alt="" style="width: 100%; height: 200px; object-fit: cover;">
+            <a href="<?= ROOT ?>/post/<?= $post->id ?>">
+                <img class=" my-1" src="<?= get_image($post->image) ?>" alt="" style="width: 100%; height: 200px; object-fit: cover;">
+            </a>
         <?php endif; ?>
 
-        <?php if (user('id') == $post->user_id) : ?>
-            <div>
-                <button class="btn-sm m-1 btn btn-warning">Edit</button>
-                <button class="btn-sm m-1 btn btn-danger">Delete</button>
-            </div>
-        <?php endif; ?>
+        <div>
+            <?php if (user('id') == $post->user_id) : ?>
+                <a href="<?= ROOT ?>/post/edit/<?= $post->id ?>">
+                    <button class="btn-sm m-1 btn btn-warning">Edit</button>
+                </a>
+                <a href="<?= ROOT ?>/post/delete/<?= $post->id ?>">
+                    <button class="btn-sm m-1 btn btn-danger">Delete</button>
+                </a>
+            <?php endif; ?>
+
+            <a href="<?= ROOT ?>/post/<?= $post->id ?>">
+                <button class="btn-sm m-1 btn btn-primary">Comments</button>
+            </a>
+        </div>
+
     </div>
 
     <hr>

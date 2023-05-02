@@ -1,7 +1,20 @@
 <?php $this->view('header') ?>
 
-<h1>search page view</h1>
+<center>
+    <h4>Search</h4>
+</center>
 
-<image src="<?= ROOT ?>/assets/images/Bender_Futurama_multfilm_33609.jpg"></image>
+<div class="row col-md-10 my-3 mx-auto justify-content-center">
+
+    <?php if (!empty($rows)) : ?>
+        <?php foreach ($rows as $row) : ?>
+            <?php $this->view('user-small', ['row' => $row]) ?>
+        <?php endforeach; ?>
+    <?php endif; ?>
+
+    <!-- кнопки пагинации -->
+    <?php $pager->display() ?>
+
+</div>
 
 <?php $this->view('footer') ?>

@@ -10,7 +10,7 @@
             <?php if (user('id') == $row->id) : ?>
                 <label>
                     <i style="position: absolute; cursor: pointer;" class="h1 text-primary bi bi-image"></i>
-                    <input onchange="display_image(this.files[0]); change_image(this.files[0])" type="file" class="d-none" name="">
+                    <input onchange="display_image(this.files[0])" type="file" class="d-none" name="">
                 </label>
             <?php endif; ?>
 
@@ -32,17 +32,14 @@
                 //если форма(файл-изображение) не содержит название(файл-изображение) в нижнем регистре
                 if (!allowed.includes(ext.toLowerCase())) {
                     alert('Only files of this type allowed: ' + allowed.toString(", "));
-                    post_image_added = false;
                     return;
                 }
-                
-                document.querySelector(".profile-image").src = URL.createObjectURL(file);
-                document.querySelector(".profile-image").parentNode.classList.remove("d-none");
 
-                post_image_added = true;
+                document.querySelector(".profile-image").src = URL.createObjectURL(file);
+                change_image(file);
             }
-            
-            
+
+
             function display_post_image(file) {
                 /** разрешенные формы изображений */
                 let allowed = ['jpg', 'jpeg', 'png', 'webp'];
@@ -55,10 +52,10 @@
                     post_image_added = false;
                     return;
                 }
-                
+
                 document.querySelector(".post-image").src = URL.createObjectURL(file);
                 document.querySelector(".post-image").parentNode.classList.remove("d-none");
-                
+
                 post_image_added = true;
             }
         </script>

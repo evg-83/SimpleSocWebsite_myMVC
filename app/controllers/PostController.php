@@ -22,6 +22,6 @@ class PostController
             redirect('login');
         }
         
-        $this->view('post');
+        $this->view('post', $data);
     }
 }
