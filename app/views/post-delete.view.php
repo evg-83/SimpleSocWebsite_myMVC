@@ -29,7 +29,7 @@
                             </a>
                         <?php endif; ?>
 
-                        <input type="hidden" id="post-id" value="<?= $post->id ?>">
+                        <input type="hidden" id="post_id" value="<?= $post->id ?>">
 
                         <div>
                             <?php if (user('id') == $post->user_id) : ?>
@@ -46,11 +46,15 @@
                 </div>
             </div>
         </form>
+
+        <div class="post-prog progress d-none">
+            <div class="progress-bar" style="width: 0%">0%</div>
+        </div>
+
     </div>
 </div>
 
 <script>
-
     /** функция размещения поста в профиле */
     function submit_post(e) {
         // будет событие, которое захватим используя (e).
@@ -62,7 +66,7 @@
         /** в общем, ищем внутри формы - это(в скобках) */
         obj.post_id = e.currentTarget.querySelector("#post_id").value;
         /** берутся из классов html разметки */
-        obj.data_type = "create-post";
+        obj.data_type = "delete-post";
         /** даст текущий id юзера */
         obj.id = "<?= user('id') ?>";
         /** берутся из классов html разметки */
@@ -127,19 +131,13 @@
         /** предупреждение */
         let obj = JSON.parse(result);
         /** чтобы видеть какой результат будем получать */
-        console.log(result);
+        // console.log(result);
 
-        /** если тип данных объекта такой */
-        if (obj.data_type == "profile-image") {
-            alert(obj.message);
+        alert(obj.message);
+
+        if (obj.success) {
             /** обновление страницы */
-            window.location.reload();
-        } else {
-            if (obj.data_type == "create-post") {
-                alert(obj.message);
-                /** обновление страницы */
-                window.location.reload();
-            }
+            window.location.href = '<?= ROOT ?>/profile';
         }
     }
 </script>

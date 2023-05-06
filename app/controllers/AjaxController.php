@@ -164,10 +164,15 @@ class AjaxController
 
                 if ($row) {
                     if ($row->user_id == $user_id) {
-                        /** удаление этих данных юзера в постах */
+                        /** удаление поста юзера */
                         $post->delete($post_id);
 
-                        $info['message'] = "Post created successfully";
+                        //удаление изображения, если есть, с постом
+                        if (file_exists($row->image ?? '')) {
+                            unlink($row->image);
+                        }
+
+                        $info['message'] = "Post deleted successfully";
                         $info['success'] = true;
                     }
                 }
