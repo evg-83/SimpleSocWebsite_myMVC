@@ -33,14 +33,14 @@ class Post
         return $rows;
     }
 
-    /** метод подтверждения */
-    public function validate($data)
+    /** метод подтверждения|проверки на ошибки  */
+    public function validate($post_data, $files_data, $id = null)
     {
         /** массив для ошибок */
         $this->errors = [];
 
         /** сообщение об ошибке(есть пост или нет) */
-        if (empty($data['post'])) {
+        if (empty($post_data['post']) && empty($files_data['image']['name'])) {
             $this->errors['post'] = "Please type something to post";
         }
 

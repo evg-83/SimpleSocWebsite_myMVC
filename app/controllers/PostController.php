@@ -42,4 +42,62 @@ class PostController
 
         $this->view('post', $data);
     }
+
+    /** метод редактирования поста */
+    public function edit($id = null)
+    {
+        $ses = new Session;
+
+        /** перенаправление если не залогинился */
+        if (!$ses->is_logged_in()) {
+            redirect('login');
+        }
+
+        /** pagination vars; разбиение на страницы */
+        $limit = 3;
+        $data['pager'] = new Pager($limit);
+        $offset = $data['pager']->offset;
+
+        $post = new Post;
+
+        /** get post row */
+        $data['post'] = $post->where(['id' => $id]);
+
+        //надо получить id юзера этого смс, прокрутив смс
+        if ($data['post']) {
+            $data['post'] = $post->add_user_data($data['post']);
+            $data['post'] = $data['post'][0];
+        }
+
+        $this->view('post-edit', $data);
+    }
+
+    /** метод удаления поста */
+    public function delete($id = null)
+    {
+        $ses = new Session;
+
+        /** перенаправление если не залогинился */
+        if (!$ses->is_logged_in()) {
+            redirect('login');
+        }
+
+        /** pagination vars; разбиение на страницы */
+        $limit = 3;
+        $data['pager'] = new Pager($limit);
+        $offset = $data['pager']->offset;
+
+        $post = new Post;
+
+        /** get post row */
+        $data['post'] = $post->where(['id' => $id]);
+
+        //надо получить id юзера этого смс, прокрутив смс
+        if ($data['post']) {
+            $data['post'] = $post->add_user_data($data['post']);
+            $data['post'] = $data['post'][0];
+        }
+
+        $this->view('post-delete', $data);
+    }
 }
