@@ -72,49 +72,57 @@ class AjaxController
             } else 
                 if ($data_type == 'create-post') {
                 $id = user('id');
-
-                $image_row = $req->files('image');
-
-                if (!empty($image_row['name']) && $image_row['error'] == 0) {
-                    /** папка загрузки изображений */
-                    $folder = "uploads/";
-
-                    if (!file_exists($folder)) {
-                        mkdir($folder, 0777, true);
-                    }
-                    /** место назначения */
-                    $destination = $folder . time() . $image_row['name'];
-                    /** перемещение файла(как до этого в show() видел) */
-                    move_uploaded_file($image_row['tmp_name'], $destination);
-
-                    /** изменение размера */
-                    $image_class = new Image;
-
-                    $image_class->resize($destination, 1000);
-                }
-
                 $post = new Post;
 
-                $arr  = [];
-                /** все что нужно для поста */
-                $arr['post']    = $req->input('post');
-                $arr['image']   = $destination ?? '';
-                $arr['user_id'] = $id;
-                $arr['date']    = date("Y-m-d H:i:s");
 
-                /** сохранение этих данных юзеру в посты */
-                $post->insert($arr);
+                if ($post->validate($req->post(), $req->files())) {
 
-                $info['message'] = "Post created successfully";
-                $info['success'] = true;
+                    $image_row = $req->files('image');
+
+                    if (!empty($image_row['name']) && $image_row['error'] == 0) {
+                        /** папка загрузки изображений */
+                        $folder = "uploads/";
+
+                        if (!file_exists($folder)) {
+                            mkdir($folder, 0777, true);
+                        }
+                        /** место назначения */
+                        $destination = $folder . time() . $image_row['name'];
+                        /** перемещение файла(как до этого в show() видел) */
+                        move_uploaded_file($image_row['tmp_name'], $destination);
+
+                        /** изменение размера */
+                        $image_class = new Image;
+
+                        $image_class->resize($destination, 1000);
+                    }
+
+                    $arr  = [];
+                    /** все что нужно для поста */
+                    $arr['post']    = $req->input('post');
+                    $arr['image']   = $destination ?? '';
+                    $arr['user_id'] = $id;
+                    $arr['date']    = date("Y-m-d H:i:s");
+
+                    /** сохранение этих данных юзеру в посты */
+                    $post->insert($arr);
+
+                    $info['message'] = "Post created successfully";
+                    $info['success'] = true;
+                } else {
+                    $info['message'] = "Please type something to post";
+                    $info['success'] = false;
+                }
             } else 
                 if ($data_type == 'edit-post') {
                 $user_id = user('id');
-                $post_id = $req->input('post');
+                $post_id = $req->input('post_id');
 
                 $post = new Post;
 
-                if ($post->validate($req->post(), $req->files())) {
+                $row  = $post->first(['id' => $post_id, 'user_id' => $user_id]);
+
+                if ($row) {
                     $image_row = $req->files('image');
 
                     if (!empty($image_row['name']) && $image_row['error'] == 0) {
@@ -143,16 +151,11 @@ class AjaxController
                         $arr['image'] = $destination;
                     }
 
-                    $arr['user_id'] = $user_id;
-
                     /** обновление этих данных юзеру в посты */
                     $post->update($post_id, $arr);
 
                     $info['message'] = "Post edited successfully";
                     $info['success'] = true;
-                } else {
-                    $info['message'] = "Please type something to post";
-                    $info['success'] = false;
                 }
             } else 
                 if ($data_type == 'delete-post') {
@@ -160,7 +163,7 @@ class AjaxController
                 $post_id = $req->input('post_id');
 
                 $post = new Post;
-                $row  = $post->first(['id' => $post_id]);
+                $row  = $post->first(['id' => $post_id, 'user_id' => $user_id]);
 
                 if ($row) {
                     if ($row->user_id == $user_id) {

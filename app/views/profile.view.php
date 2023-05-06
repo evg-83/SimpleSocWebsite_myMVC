@@ -39,7 +39,6 @@
                 change_image(file);
             }
 
-
             function display_post_image(file) {
                 /** разрешенные формы изображений */
                 let allowed = ['jpg', 'jpeg', 'png', 'webp'];
@@ -206,7 +205,7 @@
         /** предупреждение */
         let obj = JSON.parse(result);
         /** чтобы видеть какой результат будем получать */
-        console.log(result);
+        // console.log(result);
 
         /** если тип данных объекта такой */
         if (obj.data_type == "profile-image") {
