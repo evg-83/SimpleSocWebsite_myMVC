@@ -60,8 +60,10 @@ class PostController
 
         $post = new Post;
 
+        $user_id = user('id');
+
         /** get post row */
-        $data['post'] = $post->where(['id' => $id]);
+        $data['post'] = $post->where(['id' => $id, 'user_id' => $user_id]);
 
         //надо получить id юзера этого смс, прокрутив смс
         if ($data['post']) {
@@ -89,8 +91,10 @@ class PostController
 
         $post = new Post;
 
+        $user_id = user('id');
+
         /** get post row */
-        $data['post'] = $post->where(['id' => $id]);
+        $data['post'] = $post->where(['id' => $id, 'user_id' => $user_id]);
 
         //надо получить id юзера этого смс, прокрутив смс
         if ($data['post']) {

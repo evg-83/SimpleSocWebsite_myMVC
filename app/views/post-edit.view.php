@@ -4,85 +4,90 @@
 
     <div class="my-3">
 
-        <form method="post" onsubmit="submit_post(event)">
-            <div class="row post p-1">
-
-                <center>
-                    <h5>Edit Post</h5>
-                </center>
-
+        <?php if (!empty($row)) : ?>
+            <form method="post" onsubmit="submit_post(event)">
                 <div class="row post p-1">
 
-                    <div class="col-3 bg-light text-center">
-                        <a href="<?= ROOT ?>/profile/<?= $post->user->id ?>">
-                            <img class="profile-image rounded-circle m-1" src="<?= get_image($post->user->image ?? '') ?>" alt="" style="width: 80px; height: 80px; object-fit: cover;">
-                            <h5><?= esc($post->user->username ?? 'Unknown') ?></h5>
-                        </a>
-                    </div>
+                    <center>
+                        <h5>Edit Post</h5>
+                    </center>
 
-                    <div class="col-9 text-start">
-                        <div class="muted"><?= get_date($post->date) ?></div>
+                    <div class="row post p-1">
 
-                        <div>
-                            <div class="bg-secondary p-2">
-                                <textarea id="post-input" rows="4" class="form-control" placeholder="Whats on your mind?"><?= $post->post ?></textarea>
-
-                                <label>
-                                    <i style="cursor: pointer;" class="h1 text-white bi bi-image"></i>
-                                    <input id="post-image-input" onchange="display_post_image(this.files[0])" type="file" class="d-none" name="">
-                                </label>
-
-                                <button class="btn btn-warning mt-1 float-end">Save</button>
-
-                                <div class="text-center d-none">
-                                    <img class="post-image m-1" src="" style="width: 100px; height: 100px; object-fit: cover;">
-                                </div>
-
-                                <div class="clearfix"></div>
-                            </div>
-                            <script>
-                                function display_post_image(file) {
-                                    /** разрешенные формы изображений */
-                                    let allowed = ['jpg', 'jpeg', 'png', 'webp'];
-                                    // расширение(у файла есть название->разделить точкой->взять последний элемент)
-                                    let ext = file.name.split(".").pop();
-
-                                    //если форма(файл-изображение) не содержит название(файл-изображение) в нижнем регистре
-                                    if (!allowed.includes(ext.toLowerCase())) {
-                                        alert('Only files of this type allowed: ' + allowed.toString(", "));
-                                        post_image_added = false;
-                                        return;
-                                    }
-
-                                    document.querySelector(".post-image").src = URL.createObjectURL(file);
-                                    document.querySelector(".post-image").parentNode.classList.remove("d-none");
-
-                                    post_image_added = true;
-                                }
-                            </script>
+                        <div class="col-3 bg-light text-center">
+                            <a href="<?= ROOT ?>/profile/<?= $post->user->id ?>">
+                                <img class="profile-image rounded-circle m-1" src="<?= get_image($post->user->image ?? '') ?>" alt="" style="width: 80px; height: 80px; object-fit: cover;">
+                                <h5><?= esc($post->user->username ?? 'Unknown') ?></h5>
+                            </a>
                         </div>
 
-                        <?php if (!empty($post->image)) : ?>
-                            <a href="<?= ROOT ?>/post/<?= $post->id ?>">
-                                <img class=" my-1" src="<?= get_image($post->image) ?>" alt="" style="width: 100%;">
-                            </a>
-                        <?php endif; ?>
+                        <div class="col-9 text-start">
+                            <div class="muted"><?= get_date($post->date) ?></div>
 
-                        <input type="hidden" id="post_id" value="<?= $post->id ?>">
+                            <div>
+                                <div class="bg-secondary p-2">
+                                    <textarea id="post-input" rows="4" class="form-control" placeholder="Whats on your mind?"><?= $post->post ?></textarea>
 
-                        <div>
-                            <?php if (user('id') == $post->user_id) : ?>
-                                <a href="<?= ROOT ?>/post/edit/<?= $post->id ?>">
-                                    <button type="button" class="btn-sm m-1 btn btn-secondary">Back</button>
+                                    <label>
+                                        <i style="cursor: pointer;" class="h1 text-white bi bi-image"></i>
+                                        <input id="post-image-input" onchange="display_post_image(this.files[0])" type="file" class="d-none" name="">
+                                    </label>
+
+                                    <button class="btn btn-warning mt-1 float-end">Save</button>
+
+                                    <div class="text-center d-none">
+                                        <img class="post-image m-1" src="" style="width: 100px; height: 100px; object-fit: cover;">
+                                    </div>
+
+                                    <div class="clearfix"></div>
+                                </div>
+                                <script>
+                                    function display_post_image(file) {
+                                        /** разрешенные формы изображений */
+                                        let allowed = ['jpg', 'jpeg', 'png', 'webp'];
+                                        // расширение(у файла есть название->разделить точкой->взять последний элемент)
+                                        let ext = file.name.split(".").pop();
+
+                                        //если форма(файл-изображение) не содержит название(файл-изображение) в нижнем регистре
+                                        if (!allowed.includes(ext.toLowerCase())) {
+                                            alert('Only files of this type allowed: ' + allowed.toString(", "));
+                                            post_image_added = false;
+                                            return;
+                                        }
+
+                                        document.querySelector(".post-image").src = URL.createObjectURL(file);
+                                        document.querySelector(".post-image").parentNode.classList.remove("d-none");
+
+                                        post_image_added = true;
+                                    }
+                                </script>
+                            </div>
+
+                            <?php if (!empty($post->image)) : ?>
+                                <a href="<?= ROOT ?>/post/<?= $post->id ?>">
+                                    <img class=" my-1" src="<?= get_image($post->image) ?>" alt="" style="width: 100%;">
                                 </a>
                             <?php endif; ?>
+
+                            <input type="hidden" id="post_id" value="<?= $post->id ?>">
+
+                            <div>
+                                <?php if (user('id') == $post->user_id) : ?>
+                                    <a href="<?= ROOT ?>/post/edit/<?= $post->id ?>">
+                                        <button type="button" class="btn-sm m-1 btn btn-secondary">Back</button>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+
                         </div>
 
                     </div>
-
                 </div>
-            </div>
-        </form>
+            </form>
+
+        <?php else : ?>
+            <div class="m-1 alert alert-danger text-center">Sorry! That record was not found!</div>
+        <?php endif; ?>
 
         <div class="post-prog progress d-none">
             <div class="progress-bar" style="width: 0%">0%</div>
@@ -108,7 +113,7 @@
             obj.image = e.currentTarget.querySelector("#post-image-input").files[0];
         }
         /** в общем, ищем внутри формы - это(в скобках) */
-        obj.post    = e.currentTarget.querySelector("#post-input").value;
+        obj.post = e.currentTarget.querySelector("#post-input").value;
         obj.post_id = e.currentTarget.querySelector("#post_id").value;
         /** берутся из классов html разметки */
         obj.data_type = "edit-post";
