@@ -5,7 +5,7 @@
     <div class="my-3">
 
         <?php if (!empty($post)) : ?>
-                <?php $this->view('post-full', ['post' => $post]) ?>
+                <?php $this->view('post-full', $data) ?>
         <?php endif; ?>
 
         <!-- кнопки пагинации -->

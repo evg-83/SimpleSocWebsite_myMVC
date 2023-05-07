@@ -4,7 +4,7 @@
 
     <div class="my-3">
 
-        <?php if (!empty($row)) : ?>
+        <?php if (!empty($post)) : ?>
             <form method="post" onsubmit="submit_post(event)">
                 <div class="row post p-1">
 
@@ -73,7 +73,7 @@
 
                             <div>
                                 <?php if (user('id') == $post->user_id) : ?>
-                                    <a href="<?= ROOT ?>/post/edit/<?= $post->id ?>">
+                                    <a href="<?= ROOT ?>/home/<?= $post->id ?>">
                                         <button type="button" class="btn-sm m-1 btn btn-secondary">Back</button>
                                     </a>
                                 <?php endif; ?>

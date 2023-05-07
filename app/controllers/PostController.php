@@ -53,11 +53,6 @@ class PostController
             redirect('login');
         }
 
-        /** pagination vars; разбиение на страницы */
-        $limit = 3;
-        $data['pager'] = new Pager($limit);
-        $offset = $data['pager']->offset;
-
         $post = new Post;
 
         $user_id = user('id');
@@ -83,11 +78,6 @@ class PostController
         if (!$ses->is_logged_in()) {
             redirect('login');
         }
-
-        /** pagination vars; разбиение на страницы */
-        $limit = 3;
-        $data['pager'] = new Pager($limit);
-        $offset = $data['pager']->offset;
 
         $post = new Post;
 
