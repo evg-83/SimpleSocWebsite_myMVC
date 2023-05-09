@@ -5,7 +5,7 @@
     <div class="my-3">
 
         <?php if (!empty($comment)) : ?>
-            <form method="post" onsubmit="submit_post(event)">
+            <form method="post" onsubmit="submit_comment(event)">
                 <div class="row post p-1">
 
                     <div class="m-1 alert alert-danger text-center">Are you sure you want to delete this comment?!</div>
@@ -34,7 +34,7 @@
 
                             <div>
                                 <?php if (user('id') == $comment->user_id) : ?>
-                                    <a href="<?= ROOT ?>/home/<?= $comment->id ?>">
+                                    <a href="<?= ROOT ?>/comment/<?= $comment->id ?>">
                                         <button type="button" class="btn-sm m-1 btn btn-secondary">Back</button>
                                     </a>
                                     <button class="btn-sm m-1 btn btn-danger float-end">Delete</button>
@@ -46,6 +46,7 @@
                     </div>
                 </div>
             </form>
+            
         <?php else : ?>
             <div class="m-1 alert alert-danger text-center">Sorry! That record was not found!</div>
         <?php endif; ?>

@@ -204,6 +204,50 @@ class AjaxController
                     $info['success'] = true;
                 }
             } else 
+                if ($data_type == 'edit-comment') {
+                $user_id = user('id');
+                $comment_id = $req->input('comment_id');
+
+                $comment = new Comment;
+
+                $row  = $comment->first(['id' => $comment_id, 'user_id' => $user_id]);
+
+                if ($row) {
+                    $image_row = $req->files('image');
+
+                    if (!empty($image_row['name']) && $image_row['error'] == 0) {
+                        /** папка загрузки изображений */
+                        $folder = "uploads/";
+
+                        if (!file_exists($folder)) {
+                            mkdir($folder, 0777, true);
+                        }
+                        /** место назначения */
+                        $destination = $folder . time() . $image_row['name'];
+                        /** перемещение файла(как до этого в show() видел) */
+                        move_uploaded_file($image_row['tmp_name'], $destination);
+
+                        /** изменение размера */
+                        $image_class = new Image;
+
+                        $image_class->resize($destination, 1000);
+                    }
+
+                    $arr  = [];
+                    /** все что нужно для поста */
+                    $arr['comment'] = $req->input('comment');
+
+                    if (!empty($destination)) {
+                        $arr['image'] = $destination;
+                    }
+
+                    /** обновление этих данных юзеру в посты */
+                    $comment->update($comment_id, $arr);
+
+                    $info['message'] = "Comment edited successfully";
+                    $info['success'] = true;
+                }
+            } else 
                 if ($data_type == 'delete-post') {
                 $user_id = user('id');
                 $post_id = $req->input('post_id');
@@ -222,6 +266,28 @@ class AjaxController
                         }
 
                         $info['message'] = "Post deleted successfully";
+                        $info['success'] = true;
+                    }
+                }
+            } else 
+                if ($data_type == 'delete-comment') {
+                $user_id    = user('id');
+                $comment_id = $req->input('comment_id');
+
+                $comment = new Comment;
+                $row     = $comment->first(['id' => $comment_id, 'user_id' => $user_id]);
+
+                if ($row) {
+                    if ($row->user_id == $user_id) {
+                        /** удаление поста юзера */
+                        $comment->delete($comment_id);
+
+                        //удаление изображения, если есть, с постом
+                        if (file_exists($row->image ?? '')) {
+                            unlink($row->image);
+                        }
+
+                        $info['message'] = "Comment deleted successfully";
                         $info['success'] = true;
                     }
                 }
