@@ -19,6 +19,7 @@ class Comment
         'image',
         'comment',
         'user_id',
+        'post_id',
         'date',
     ];
 

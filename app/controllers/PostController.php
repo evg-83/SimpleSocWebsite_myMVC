@@ -44,6 +44,9 @@ class PostController
             $data['post'] = $post_row = $data['post'][0];
 
             /** get comments for this post */
+            // $comment->order_type = 'asc';
+            $comment->offset     = $offset;
+
             $data['comments'] = $comment->where(['post_id' => $post_row->id]);
 
             if ($data['comments']) {
