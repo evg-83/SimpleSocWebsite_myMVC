@@ -4,6 +4,7 @@ namespace Controller;
 
 use Core\Pager;
 use Core\Session;
+use Model\Comment;
 use Model\Post;
 
 /** Прямой путь к файлу будет заблокирован */
@@ -29,7 +30,10 @@ class PostController
         $data['pager'] = new Pager($limit);
         $offset = $data['pager']->offset;
 
-        $post = new Post;
+        $post    = new Post;
+        $comment = new Comment;
+
+        // $comment->create_table();
 
         /** get post row */
         $data['post'] = $post->where(['id' => $id]);
@@ -37,7 +41,14 @@ class PostController
         //надо получить id юзера этого смс, прокрутив смс
         if ($data['post']) {
             $data['post'] = $post->add_user_data($data['post']);
-            $data['post'] = $data['post'][0];
+            $data['post'] = $post_row = $data['post'][0];
+
+            /** get comments for this post */
+            $data['comments'] = $comment->where(['post_id' => $post_row->id]);
+
+            if ($data['comments']) {
+                $data['comments'] = $comment->add_user_data($data['comments']);
+            }
         }
 
         $this->view('post', $data);

@@ -2,14 +2,16 @@
 
 namespace Controller;
 
-/** Прямой путь к файлу будет заблокирован */
-defined('ROOTPATH') or exit('Доступ запрещен!');
-
+use Model\Comment;
 use Model\Post;
 use Model\Image;
 use Core\Request;
 use Core\Session;
 use Model\User;
+
+/** Прямой путь к файлу будет заблокирован */
+defined('ROOTPATH') or exit('Доступ запрещен!');
+
 
 /** класс ajax */
 class AjaxController
@@ -111,6 +113,50 @@ class AjaxController
                     $info['success'] = true;
                 } else {
                     $info['message'] = "Please type something to post";
+                    $info['success'] = false;
+                }
+            } else 
+                if ($data_type == 'create-comment') {
+                $id = user('id');
+                $comment = new Comment;
+
+
+                if ($comment->validate($req->post(), $req->files())) {
+
+                    $image_row = $req->files('image');
+
+                    if (!empty($image_row['name']) && $image_row['error'] == 0) {
+                        /** папка загрузки изображений */
+                        $folder = "uploads/";
+
+                        if (!file_exists($folder)) {
+                            mkdir($folder, 0777, true);
+                        }
+                        /** место назначения */
+                        $destination = $folder . time() . $image_row['name'];
+                        /** перемещение файла(как до этого в show() видел) */
+                        move_uploaded_file($image_row['tmp_name'], $destination);
+
+                        /** изменение размера */
+                        $image_class = new Image;
+
+                        $image_class->resize($destination, 1000);
+                    }
+
+                    $arr  = [];
+                    $arr['comment'] = $req->input('comment');
+                    $arr['post_id'] = $req->input('post_id');
+                    $arr['image']   = $destination ?? '';
+                    $arr['user_id'] = $id;
+                    $arr['date']    = date("Y-m-d H:i:s");
+
+                    /** сохранение этих данных юзеру в посты */
+                    $comment->insert($arr);
+
+                    $info['message'] = "Comment created successfully";
+                    $info['success'] = true;
+                } else {
+                    $info['message'] = "Please type something to comment";
                     $info['success'] = false;
                 }
             } else 

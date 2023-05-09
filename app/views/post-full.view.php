@@ -38,6 +38,8 @@
             <div class="bg-secondary p-2">
                 <textarea id="comment-input" rows="4" class="form-control" placeholder="Type a comment here"></textarea>
 
+                <input type="hidden" id="post_id" value="<?= $post->id ?>">
+
                 <label>
                     <i style="cursor: pointer;" class="h1 text-white bi bi-image"></i>
                     <input id="comment-image-input" onchange="display_comment_image(this.files[0])" type="file" class="d-none" name="">
@@ -99,21 +101,6 @@
     /** переменная сохраненных изображений в постах */
     var comment_image_added = false;
 
-    /** функция изменения изображения */
-    function change_image(file) {
-        var obj = {};
-        /** в принципе создаю ключи-значения */
-        obj.image = file;
-        /** берутся из классов html разметки */
-        obj.data_type = "profile-image";
-        /** даст текущий id юзера */
-        obj.id = "<?= user('id') ?>";
-        /** берутся из классов html разметки */
-        obj.progressbar = 'profile-image-prog';
-
-        send_data(obj);
-    }
-
     /** функция размещения поста в профиле */
     function submit_comment(e) {
         // будет событие, которое захватим используя (e).
@@ -128,6 +115,7 @@
         }
         /** в общем, ищем внутри формы - это(в скобках) */
         obj.comment = e.currentTarget.querySelector("#comment-input").value;
+        obj.post_id = e.currentTarget.querySelector("#post_id").value;
         /** берутся из классов html разметки */
         obj.data_type = "create-comment";
         /** даст текущий id юзера */
