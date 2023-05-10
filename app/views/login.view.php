@@ -99,6 +99,10 @@
             <h1 class="h3 mb-1 fw-normal"><?= APP_NAME ?></h1>
             <h2 class="h3 mb-3 fw-normal">Please login</h2>
 
+            <?php if (message()) : ?>
+                <div class="alert alert-danger text-center"><?= message('', true) ?></div>
+            <?php endif; ?>
+
             <?php if (!empty($errors)) : ?>
                 <div class="alert alert-danger text-center"><?= implode("<br>", $errors) ?></div>
             <?php endif; ?>

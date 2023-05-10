@@ -24,7 +24,7 @@ class User
     ];
 
     /** метод подтверждения */
-    public function validate($data)
+    public function validate($data, $id = null)
     {
         /** массив для ошибок */
         $this->errors = [];
@@ -39,6 +39,13 @@ class User
             }
         }
 
+        /** проверка с уже существующей почтой */
+        if ($id) {
+            if ($this->query("select id from $this->table where id != $id && email = '$data[email]' limit 1")) {
+                $this->errors['email'] = "Email is already in use";
+            }
+        }
+
         /** сообщение об ошибке */
         if (empty($data['username'])) {
             $this->errors['username'] = "A username is required";
@@ -49,14 +56,16 @@ class User
             }
         }
 
-        /** сообщение об ошибке */
-        if (empty($data['password'])) {
-            $this->errors['password'] = "Password is required";
-        }
+        if (!$id) {
+            /** сообщение об ошибке */
+            if (empty($data['password'])) {
+                $this->errors['password'] = "Password is required";
+            }
 
-        /** сообщение об ошибке */
-        if (empty($data['terms'])) {
-            $this->errors['terms'] = "Please accept the terms and conditions";
+            /** сообщение об ошибке */
+            if (empty($data['terms'])) {
+                $this->errors['terms'] = "Please accept the terms and conditions";
+            }
         }
 
         /** если нет ошибок, то true */

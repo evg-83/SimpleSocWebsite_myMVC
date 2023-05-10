@@ -1,5 +1,9 @@
 <?php $this->view('header') ?>
 
+<center>
+    <h5>News Feed</h5>
+</center>
+
 <div class="row p-2 col-md-8 shadow mx-auto border rounded">
 
     <div class="col-md-2 text-center">

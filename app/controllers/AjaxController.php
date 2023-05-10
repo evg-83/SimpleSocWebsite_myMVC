@@ -68,6 +68,10 @@ class AjaxController
                     /** сохранение этих данных юзеру */
                     $user->update($id, ['image' => $destination]);
 
+                    //как бы надо перезагрузить страницу, чтобы сессия обновилась и аватарка появилась
+                    $row->image = $destination;
+                    $ses->auth($row);
+
                     $info['message'] = "Profile image change successfully";
                     $info['success'] = true;
                 }
@@ -202,6 +206,38 @@ class AjaxController
 
                     $info['message'] = "Post edited successfully";
                     $info['success'] = true;
+                }
+            } else 
+                if ($data_type == 'profile-settings') {
+                $user_id  = user('id');
+                $username = $req->input('username');
+                $email    = $req->input('email');
+                $password = $req->input('password');
+
+                $user = new User;
+
+                $row  = $user->first(['id' => $user_id]);
+
+                if ($row) {
+                    if ($user->validate($req->post(), $user_id)) {
+                        $arr  = [];
+
+                        $arr['username'] = $req->input('username');
+                        $arr['email']    = $req->input('email');
+
+                        if (!empty($password)) {
+                            $arr['password'] = password_hash($req->input('password'), PASSWORD_DEFAULT);
+                        }
+
+                        /** обновление этих данных юзеру в посты */
+                        $user->update($user_id, $arr);
+
+                        $info['message'] = "Profile edited successfully";
+                        $info['success'] = true;
+                    } else {
+                        $info['message'] = "ERROR: " . implode("<br>", $user->errors);
+                        $info['success'] = false;
+                    }
                 }
             } else 
                 if ($data_type == 'edit-comment') {
