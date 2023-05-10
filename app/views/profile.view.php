@@ -202,10 +202,10 @@
 
     /** функция возврата результата */
     function handle_result(result) {
+        /** чтобы видеть какой результат будем получать */
+        console.log(result);
         /** предупреждение */
         let obj = JSON.parse(result);
-        /** чтобы видеть какой результат будем получать */
-        // console.log(result);
 
         /** если тип данных объекта такой */
         if (obj.data_type == "profile-image") {

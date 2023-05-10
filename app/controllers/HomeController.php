@@ -28,7 +28,7 @@ class HomeController
         $id = user('id');
 
         /** pagination vars; разбиение на страницы */
-        $limit = 3;
+        $limit = 5;
 
         $data['pager'] = new Pager($limit);
 
